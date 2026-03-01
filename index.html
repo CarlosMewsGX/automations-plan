@@ -43,6 +43,112 @@
     .period-date  { font-size: 20px; font-weight: 700; color: #111; }
     .period-track { font-size: 20px; font-weight: 700; color: #111; }
 
+    /* ── Launch Confidence Widget ── */
+    .confidence-widget {
+      background: #fff;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      padding: 24px 28px 22px;
+      margin-bottom: 36px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .confidence-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .confidence-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .confidence-current-label {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .confidence-current-label strong { color: #d97706; }
+    .confidence-track {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .confidence-step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      position: relative;
+    }
+    .confidence-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 99px;
+    }
+    .bar-1 { background: #ef4444; opacity: 0.45; }
+    .bar-2 { background: #f97316; opacity: 0.45; }
+    .bar-3 { background: #f59e0b; }
+    .bar-4 { background: #84cc16; opacity: 0.45; }
+    .bar-5 { background: #22c55e; opacity: 0.45; }
+    .confidence-step.active .confidence-bar {
+      height: 16px;
+      opacity: 1;
+      box-shadow: 0 0 0 4px rgba(245,158,11,0.25);
+    }
+    .confidence-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: #d1d5db;
+    }
+    .confidence-step.active .confidence-num {
+      color: #d97706;
+      font-size: 13px;
+    }
+    .confidence-label-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 3px;
+    }
+    .conf-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9ca3af;
+    }
+    .confidence-step.active .conf-name {
+      font-size: 12px;
+      color: #b45309;
+    }
+    .conf-desc {
+      font-size: 10px;
+      color: #d1d5db;
+      line-height: 1.4;
+    }
+    .confidence-step.active .conf-desc {
+      color: #6b7280;
+    }
+    .conf-we-are-here {
+      display: inline-block;
+      margin-top: 4px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      border: 1px solid #fcd34d;
+      letter-spacing: 0.03em;
+      animation: pulse-badge 2s infinite;
+    }
+    @keyframes pulse-badge {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
+      50%       { box-shadow: 0 0 0 5px rgba(245,158,11,0); }
+    }
+
     .cycle-goal {
       background: #111111;
       color: #fff;
@@ -249,6 +355,63 @@
 <div class="page">
 
   <h1 class="page-title">Automation Plan Progress – Product and Go to Market</h1>
+
+  <!-- ── Launch Confidence Scale ── -->
+  <div class="confidence-widget">
+    <div class="confidence-header">
+      <span class="confidence-title">Launch Confidence Scale</span>
+      <span class="confidence-current-label">Current status: <strong>Level 3 — Moderate</strong></span>
+    </div>
+    <div class="confidence-track">
+
+      <div class="confidence-step">
+        <div class="confidence-bar bar-1"></div>
+        <div class="confidence-num">1</div>
+        <div class="confidence-label-text">
+          <span class="conf-name">No Confidence</span>
+          <span class="conf-desc">Not happening — stop and reassess</span>
+        </div>
+      </div>
+
+      <div class="confidence-step">
+        <div class="confidence-bar bar-2"></div>
+        <div class="confidence-num">2</div>
+        <div class="confidence-label-text">
+          <span class="conf-name">Low Confidence</span>
+          <span class="conf-desc">Unlikely without major changes — escalate</span>
+        </div>
+      </div>
+
+      <div class="confidence-step active">
+        <div class="confidence-bar bar-3"></div>
+        <div class="confidence-num">3</div>
+        <div class="confidence-label-text">
+          <span class="conf-name">Moderate</span>
+          <span class="conf-desc">Possible, but risks need active management</span>
+          <span class="conf-we-are-here">▲ We are here</span>
+        </div>
+      </div>
+
+      <div class="confidence-step">
+        <div class="confidence-bar bar-4"></div>
+        <div class="confidence-num">4</div>
+        <div class="confidence-label-text">
+          <span class="conf-name">High Confidence</span>
+          <span class="conf-desc">On track, minor risks remain — stay the course</span>
+        </div>
+      </div>
+
+      <div class="confidence-step">
+        <div class="confidence-bar bar-5"></div>
+        <div class="confidence-num">5</div>
+        <div class="confidence-label-text">
+          <span class="conf-name">Full Confidence 🚀</span>
+          <span class="conf-desc">Ready to launch</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════
        Mar 3 – Mar 27
