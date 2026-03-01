@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Automation Plan Progress – Product and Go to Market</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f5f3fc;
+      color: #111;
+      font-size: 14px;
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 36px 28px 60px;
+    }
+
+    /* ── Page title ── */
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 32px;
+      letter-spacing: -0.4px;
+    }
+
+    /* ── Period block ── */
+    .period { margin-bottom: 40px; }
+
+    .period-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .period-date  { font-size: 20px; font-weight: 700; color: #111; }
+    .period-track { font-size: 20px; font-weight: 700; color: #111; }
+
+    .cycle-goal {
+      background: #111111;
+      color: #fff;
+      border-radius: 6px;
+      padding: 9px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .cycle-goal-gtm {
+      background: #6b7280;
+      color: #fff;
+      border-radius: 6px;
+      padding: 9px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    /* ── Drop zones (drag & drop targets) ── */
+    .drop-zone {
+      min-height: 40px;
+      border-radius: 6px;
+      transition: background 0.15s, border 0.15s;
+    }
+    .drop-zone.drag-over {
+      background: #ede9f6;
+      border: 2px dashed #7c3aed;
+      padding: 6px;
+    }
+    .drag-hint {
+      font-size: 10px;
+      color: #9ca3af;
+      text-align: center;
+      padding: 2px 0 2px;
+      user-select: none;
+    }
+
+    /* ── Card ── */
+    .card {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      background: #fff;
+      border: 1.5px solid #c4b5fd;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    .card:active { cursor: grabbing; }
+    .card.dragging {
+      opacity: 0.4;
+      transform: scale(0.98);
+      box-shadow: 0 8px 24px rgba(91,33,182,0.2);
+    }
+
+    /* Left pane */
+    .card-left {
+      display: flex;
+      min-height: 90px;
+    }
+
+    /* Colored stripe with rotated label */
+    .stripe {
+      width: 34px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stripe-product { background: #111111; }
+    .stripe-gtm     { background: #6b7280; }
+
+    .stripe-label {
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    }
+
+    /* Card body text */
+    .card-body {
+      padding: 11px 14px;
+      flex: 1;
+    }
+    .card-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 6px;
+      line-height: 1.45;
+    }
+    .card-field {
+      font-size: 12.5px;
+      color: #333;
+      margin-bottom: 3px;
+      line-height: 1.55;
+    }
+    .card-field strong { font-weight: 700; }
+
+    /* Right pane */
+    .card-right {
+      border-left: 1.5px solid #ede9f6;
+      padding: 11px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      background: #faf9ff;
+    }
+    .right-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .category-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #374151;
+      line-height: 1.3;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 4px;
+      padding: 3px 9px;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-on-track    { background: #bbf7d0; color: #14532d; }
+    .badge-not-started { background: #6b7280; color: #fff; }
+    .badge-decision    { background: #f97316; color: #fff; }
+
+    /* Progress bar */
+    .progress-wrap { display: flex; flex-direction: column; gap: 3px; }
+    .progress-bar-bg {
+      width: 100%;
+      height: 5px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+    .fill-green  { background: #4ade80; }
+    .fill-orange { background: #f97316; }
+    .fill-empty  { width: 0 !important; }
+
+    .right-note {
+      font-size: 11.5px;
+      color: #6b7280;
+      line-height: 1.45;
+    }
+
+    /* ── Section separators ── */
+    .section-gap { height: 28px; }
+
+    /* ── UNFOLD banner ── */
+    .unfold-banner {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin: 24px 0 10px;
+    }
+    .unfold-label {
+      font-size: 16px;
+      font-weight: 800;
+      color: #5b21b6;
+    }
+    .unfold-right {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    /* ── GA footer ── */
+    .ga-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding: 11px 16px;
+      background: #1a1a2e;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <h1 class="page-title">Automation Plan Progress – Product and Go to Market</h1>
+
+  <!-- ═══════════════════════════════════════════════
+       Mar 3 – Mar 27
+  ═══════════════════════════════════════════════ -->
+  <div class="period">
+    <div class="period-meta">
+      <span class="period-date">March 3rd - March 27th</span>
+    </div>
+    <div class="cycle-goal">Product Goal - Pilot with a Property on Demo + Moderated User Testing</div>
+    <div class="cycle-goal-gtm">GTM Goal - Finalize pricing, identify pilot candidates &amp; lay product marketing foundations</div>
+    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; margin-bottom:6px;">
+      <span class="period-track">Initiative</span>
+      <span class="period-track">Progress Tracking</span>
+    </div>
+
+    <p class="drag-hint">↕ Drag cards between blocks</p>
+    <div class="drop-zone" id="zone-1">
+
+      <!-- 1. Templates -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-1020">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Allow hotels to activate pre-built automations instead of building from scratch.</div>
+            <p class="card-field"><strong>Goal:</strong> Launch from prebuilt starters.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Pilot-ready templates: Room Upgrades template exists, is editable, and can be published to a working flow on the demo property with minimal changes.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Templates</span>
+            <span class="badge badge-on-track">ON TRACK</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:50%"></div></div>
+          </div>
+          <p class="right-note">50% complete · Expected completion on schedule</p>
+        </div>
+      </div>
+
+      <!-- 2. Minimum Logs + Critical alerting -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-1021">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Allow hotels to see if automations ran and why they failed.</div>
+            <p class="card-field"><strong>Goal:</strong> Provide enough visibility to debug runs and support operations.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Pilot-ready logging: run list with filters (time/status/automation), run detail timeline with step outcomes + final status, and "next step" guidance from error_category/error_code for common failures.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Minimum Logs +<br>Critical alerting</span>
+            <span class="badge badge-on-track">ON TRACK</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:40%"></div></div>
+          </div>
+          <p class="right-note">40% complete · Reason: Critical alerting work is expected to start next week and be delivered before end-of-March</p>
+        </div>
+      </div>
+
+      <!-- 3. Stop failing automation (no right panel) -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-1143">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Allow hotels to automatically stop a failing automation and get a PMS alert to fix it.</div>
+            <p class="card-field"><strong>Goal:</strong> Prevent silent failure cascades and protect hotel operations.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Pilot-ready slice: system thresholds detect degraded runs, PMS shows a high-signal alert, breached thresholds auto-pause the flow, and the alert links to runs/logs with a clear remediation path.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Minimum Logs +<br>Critical alerting</span>
+            <span class="badge badge-on-track">ON TRACK</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:40%"></div></div>
+          </div>
+          <p class="right-note">40% complete · Reason: Critical alerting work is expected to start next week and be delivered before end-of-March</p>
+        </div>
+      </div>
+
+      <!-- 4. Room Upgrades -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-940">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Allow hotels to automatically upgrade loyal guests to a better room, with full control over inventory and limits.</div>
+            <p class="card-field"><strong>Goal:</strong> Automate consistent upgrades with guardrails.</p>
+            <p class="card-field"><strong>Success:</strong> Pilot-ready end-to-end flow: publishable + runnable on demo property data, upgrades applied for eligible reservations, guardrails prevent inventory/conflict issues, and each run is traceable in logs (steps + outcome).</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Room Upgrades</span>
+            <span class="badge badge-on-track">ON TRACK</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:20%"></div></div>
+          </div>
+          <p class="right-note">20% complete · Reason: We just started working on it and it's the most complex automation due to it's logic</p>
+        </div>
+      </div>
+
+      <!-- 5. Automation Hub Services -->
+      <div class="card" draggable="true" data-href="#">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Automation Hub Services production-ready</div>
+            <p class="card-field"><strong>Goal:</strong> Harden the Automation Hub Service (AHS) and Automation Hub Gateway for production-readiness by strengthening security, scaling capacity, introducing environment separation, adding CI/CD pipeline, improving observability, and increasing resilience — ensuring the platform is reliable, secure, and maintainable at scale.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Services production-ready</span>
+            <span class="badge badge-on-track">ON TRACK</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:20%"></div></div>
+          </div>
+          <p class="right-note">20% complete · Reason: We just started working on it and it's the most complex automation due to it's logic</p>
+        </div>
+      </div>
+
+      <!-- 6. PMS – Existing services -->
+      <div class="card" draggable="true" data-href="#">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Existing services "Send message to guest"</div>
+            <p class="card-field"><strong>Goal:</strong> Enable SMS as an action step inside any automation flow.</p>
+            <p class="card-field"><strong>Success criteria:</strong> "Send message to guest" action available in the Workflow Creator, working with PMS existing services.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">PMS</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">TBD</p>
+        </div>
+      </div>
+
+      <!-- 7. Finalize pricing model -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#7.Pricing-%26-Packaging-Options">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Finalize pricing model</div>
+            <p class="card-field"><strong>Goal:</strong> Select from 5 evaluated models (recommended: Atlassian-inspired product-linked pricing). Align with Commercial &amp; Finance. Decision required by end of Cycle 2.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Pricing decision made, communicated internally to Sales &amp; CS, pilot pricing terms agreed. Decision required by end of Cycle 2.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Pricing</span>
+            <span class="badge badge-decision">DECISION NEEDED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-orange" style="width:50%"></div></div>
+          </div>
+          <p class="right-note">50% complete · 5 models evaluated — need GX leadership sign-off plus Commercial/Finance later. Pending on Nova news this week.</p>
+        </div>
+      </div>
+
+      <!-- 8. Identify pilot candidates -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#6.GTM-Workstreams">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Identify pilot candidates and start onboarding</div>
+            <p class="card-field"><strong>Goal:</strong> Pipeline for pilot.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Ideal pilot customer criteria defined. Shortlist of ≥ 10 prospects agreed with Sales.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Services production-ready</span>
+            <span class="badge badge-on-track">ON TRACK</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:70%"></div></div>
+          </div>
+          <p class="right-note">70% complete Pilot shortlist and onboarding in progress with Strawberry.</p>
+        </div>
+      </div>
+
+      <!-- 9. Product Marketing messaging hierarchy -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#6.GTM-Workstreams">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Product Marketing messaging hierarchy</div>
+            <p class="card-field"><strong>Goal:</strong> Establish core positioning and competitive narrative.</p>
+            <p class="card-field"><strong>Success criteria:</strong> 1-page product brief (internal), customer-facing overview page drafted, competitive battle card (vs Akia, Zapier, Opera automation), press release draft reviewed.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">PRODUCT MARKETING</span>
+            <span class="badge badge-on-track">ON TRACK</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:30%"></div></div>
+          </div>
+          <p class="right-note">? % complete</p>
+        </div>
+      </div>
+
+    </div><!-- /zone-1 -->
+  </div><!-- /period Mar -->
+
+
+  <!-- ═══════════════════════════════════════════════
+       Apr 14 – May 22
+  ═══════════════════════════════════════════════ -->
+  <div class="period">
+    <div class="period-meta">
+      <span class="period-date">April 14th - May 22nd</span>
+    </div>
+    <div class="cycle-goal">Product Goal - Closed Beta testing in Production (1/2 properties)</div>
+    <div class="cycle-goal-gtm">GTM Goal - Onboard pilot customers, enable Sales &amp; CS, build KPI tracking &amp; prepare Unfold launch content</div>
+    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; margin-bottom:6px;">
+      <span class="period-track">Initiative</span>
+      <span class="period-track">Progress Tracking</span>
+    </div>
+
+    <p class="drag-hint">↕ Drag cards between blocks</p>
+    <div class="drop-zone" id="zone-2">
+
+      <!-- 1. Amenity Gift -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-950">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Allow hotels to automatically recognize loyal guests with a personalized welcome gift on arrival, with full control over budget and selection.</div>
+            <p class="card-field"><strong>Goal:</strong> Automatically create a staff task to deliver a personalized welcome gift to loyal guests..</p>
+            <p class="card-field"><strong>Success:</strong> Pilot-ready end-to-end flow: publishable + runnable on property data.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Amenity Gift</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">Not started</p>
+        </div>
+      </div>
+
+      <!-- 2. Allowance Flow -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-1007">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Allow hotels to automatically reward loyal guests with a spending allowance on arrival, with full control over budget, outlets, and expiry.</div>
+            <p class="card-field"><strong>Goal:</strong> Automatically issue a per-stay or per-day spending allowance to eligible loyalty guests.</p>
+            <p class="card-field"><strong>Success:</strong> Pilot-ready end-to-end flow: publishable + runnable on property data.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Allowance Flow</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">Not started</p>
+        </div>
+      </div>
+
+      <!-- 3. Comms Hub integration -->
+      <div class="card" draggable="true" data-href="#">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Comms Hub integration — "Send message to guest"</div>
+            <p class="card-field"><strong>Goal:</strong> Enable SMS/WhatsApp as an action step inside any automation flow.</p>
+            <p class="card-field"><strong>Success criteria:</strong> "Send message to guest" action available in the Workflow Creator, working with Comms Hub templates.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Comms Hub</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">Comms Hub not available for an integration.</p>
+        </div>
+      </div>
+
+      <!-- 4. Resilience – Rate Limiting -->
+      <div class="card" draggable="true" data-href="#">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Resilience - Rate Limiting</div>
+            <p class="card-field"><strong>Goal</strong> Implement rate limiting across the AH to ensure fair usage among customers, prevent misuse, and protect the platform's performance and stability at scale.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Rate limits are enforced per customer and/or per plan tier consistently across all platform entry points</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Rate limiting</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">TBD</p>
+        </div>
+      </div>
+
+      <!-- 5. Resilience – Availability -->
+      <div class="card" draggable="true" data-href="#">
+        <div class="card-left">
+          <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+          <div class="card-body">
+            <div class="card-title">Resilience - Availability</div>
+            <p class="card-field"><strong>Goal:</strong> Ensure the AH stays operational when AppMixer is down, with a clear contingency plan that minimises customer impact.</p>
+            <p class="card-field"><strong>Success criteria:</strong> The team has a documented contingency plan, customers are informed when their automations are affected, and any automations that failed during downtime can be recovered once the library is back.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Availability</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">TBD</p>
+        </div>
+      </div>
+
+      <!-- 6. KPIs – Pilot customers onboarded -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#6.GTM-Workstreams">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Pilot customers onboarded (≥ 2 properties by Unfold)</div>
+            <p class="card-field"><strong>Goal:</strong> Managed pilot with real properties running live flows.</p>
+            <p class="card-field"><strong>Success criteria:</strong> ≥ 2 properties onboarded with CS-led kickoff, first flow live per property, health check cadence running, escalation path defined (Hotel Admin → CS → SA → Product).</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">KPIs</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">TBD</p>
+        </div>
+      </div>
+
+      <!-- 7. KPIs – Success metrics & tracking -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#8.Success-Metrics-%26-KPIs">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Success metrics &amp; tracking instrumentation</div>
+            <p class="card-field"><strong>Goal:</strong> Instrument KPIs before pilot launch.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Product instrumentation to track these should be in place before Cycle 3 ends.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">KPIs</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">TBD</p>
+        </div>
+      </div>
+
+      <!-- 8. KPIs – Onboarding playbook -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#11.Onboarding-%26-Setup">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Onboarding playbook, quick-start guide &amp; Help Centre</div>
+            <p class="card-field"><strong>Goal:</strong> Fast time-to-first-value for pilot customers.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Pilot onboarding playbook, 1–2 page admin guide, recipe cards for templates, Help Centre getting-started article, video walkthrough (5–10 min), escalation route defined.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">KPIs</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">Template: 20–40 min setup · Custom: 1–3 hours · Must be ready before pilot kick-off</p>
+        </div>
+      </div>
+
+      <!-- 9. SALES & CS – Begin enablement -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#6.GTM-Workstreams">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Begin Sales &amp; CS enablement</div>
+            <p class="card-field"><strong>Goal:</strong> Equip Sales and CS for pilot conversations.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Sales pitch deck built, objection-handling guide (vs. Akia/Zapier) complete, internal Sales training session run (product demo + Q&amp;A). CS lead assigned for pilot programme.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">SALES &amp; CS</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">Not yet started. Enablement training request for Sales and CS has been submitted. See <u>link</u></p>
+        </div>
+      </div>
+
+      <!-- 10. KPIs – Press release & Unfold narrative -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#6.GTM-Workstreams">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Press release drafted &amp; Unfold session narrative</div>
+            <p class="card-field"><strong>Goal:</strong> Launch content ready for Unfold.</p>
+            <p class="card-field"><strong>Success criteria:</strong> "Mews Launches Automation Hub" press release approved (PMM + Comms). Unfold main-stage demo script complete: Foundation + Observability + Ecosystem Advantage. Customer video / demo reel produced.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">KPIs</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">6–8 week lead time for campaign content — must start early Cycle 3. We're already working on the UNFOLD session narrative - It's going to be Pepa's keynote.</p>
+        </div>
+      </div>
+
+      <!-- 11. KPIs – Mews University -->
+      <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#11.1-Mews-University%3A-Automation-Hub-Module">
+        <div class="card-left">
+          <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+          <div class="card-body">
+            <div class="card-title">Mews University: Automation Hub Module</div>
+            <p class="card-field"><strong>Goal:</strong> Deliver structured education to drive sustainable adoption and reduce CS/support load.</p>
+            <p class="card-field"><strong>Success criteria:</strong> Modules 1–4 live on Mews University before Unfold (22 May). Module 6 (internal CS/Support depth) delivered before pilot launch.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">KPIs</span>
+            <span class="badge badge-not-started">NOT STARTED</span>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+          </div>
+          <p class="right-note">PMM (content) + CS lead (review) + SA (Module 5)</p>
+        </div>
+      </div>
+
+    </div><!-- /zone-2 -->
+  </div><!-- /period Apr -->
+
+
+  <!-- ═══════════════════════════════════════════════
+       UNFOLD May 27 – July 1
+  ═══════════════════════════════════════════════ -->
+  <div class="period-meta">
+    <span class="period-date">UNFOLD May 27th - July 1st</span>
+  </div>
+
+  <div class="cycle-goal">Product Goal - Launch at Unfold (Production, 20 properties)</div>
+  <div class="cycle-goal-gtm">GTM Goal - Finalize sales enablement &amp; drive pre-Unfold awareness campaign</div>
+  <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; margin-bottom:6px;">
+    <span class="period-track">Initiative</span>
+    <span class="period-track">Progress Tracking</span>
+  </div>
+  <p class="drag-hint">↕ Drag cards between blocks</p>
+  <div class="drop-zone" id="zone-3">
+
+    <!-- 1. Sales deck finalized -->
+    <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#6.GTM-Workstreams">
+      <div class="card-left">
+        <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+        <div class="card-body">
+          <div class="card-title">Sales deck finalized &amp; all AEs trained</div>
+          <p class="card-field"><strong>Goal:</strong> 100% of qualified prospects see a live demo.</p>
+          <p class="card-field"><strong>Success criteria:</strong> Sales pitch deck complete (discovery → demo → close), objection-handling guide finalized, 100% of AEs trained with product demo + Q&amp;A.</p>
+        </div>
+      </div>
+      <div class="card-right">
+        <div class="right-top">
+          <span class="category-name">KPIs</span>
+          <span class="badge badge-not-started">NOT STARTED</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+        </div>
+        <p class="right-note">Depends on pricing decision from Cycle 2</p>
+      </div>
+    </div>
+
+    <!-- 2. Pot-Unfold awareness campaign -->
+    <div class="card" draggable="true" data-href="https://mews.atlassian.net/wiki/spaces/GX/pages/1581023427/Mews+Automations+Go-to-Market+Rollout+Plan+for+Unfold+2026+Launch#12.In-Platform-Promotion-%26-Marketing-Campaign">
+      <div class="card-left">
+        <div class="stripe stripe-gtm"><span class="stripe-label">GTM</span></div>
+        <div class="card-body">
+          <div class="card-title">Pot-Unfold awareness campaign (Apr–May)</div>
+          <p class="card-field"><strong>Goal:</strong> Build demand ahead of Unfold.</p>
+          <p class="card-field"><strong>Success criteria:</strong> Teaser content on socials, thought-leadership blog post, Community "Coming Soon" post, segmented email to existing customers, partner brief to Marketplace partners.</p>
+        </div>
+      </div>
+      <div class="card-right">
+        <div class="right-top">
+          <span class="category-name">KPIs</span>
+          <span class="badge badge-not-started">NOT STARTED</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+        </div>
+        <p class="right-note">PMM + CRM ownership — feeds into Unfold launch activation</p>
+      </div>
+    </div>
+
+  </div><!-- /zone-3 -->
+
+  <div class="period-meta" style="margin-top:28px;">
+    <span class="period-date">July 1st - September 30th</span>
+  </div>
+  <div class="cycle-goal">Product Goal - Available to 100s hotels (GA)</div>
+  <div class="cycle-goal-gtm">GTM Goal - Drive GA market launch, scale sales pipeline &amp; activate full customer acquisition programme</div>
+
+</div><!-- /page -->
+
+<script>
+  let dragged = null;
+  let dragMoved = false;
+
+  document.addEventListener('dragstart', e => {
+    const card = e.target.closest('.card[draggable="true"]');
+    if (!card) return;
+    dragged = card;
+    dragMoved = false;
+    setTimeout(() => card.classList.add('dragging'), 0);
+  });
+
+  document.addEventListener('dragover', () => { dragMoved = true; });
+
+  /* Click to open link — only fires if the user didn't drag */
+  document.addEventListener('click', e => {
+    const card = e.target.closest('.card[data-href]');
+    if (!card || dragMoved) return;
+    const url = card.dataset.href;
+    if (url && url !== '#') window.open(url, '_blank', 'noopener');
+  });
+
+  document.addEventListener('dragend', () => {
+    if (dragged) dragged.classList.remove('dragging');
+    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+    dragged = null;
+  });
+
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+      const afterEl = getDragAfterElement(zone, e.clientY);
+      if (afterEl == null) zone.appendChild(dragged);
+      else zone.insertBefore(dragged, afterEl);
+    });
+    zone.addEventListener('dragleave', e => {
+      if (!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over');
+    });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+    });
+  });
+
+  function getDragAfterElement(container, y) {
+    const els = [...container.querySelectorAll('.card[draggable="true"]:not(.dragging)')];
+    return els.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) return { offset, element: child };
+      return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+</script>
+</body>
+</html>
