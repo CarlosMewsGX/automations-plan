@@ -2,110 +2,114 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Automation Plan Progress – Product and Go to Market</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #f5f3fc;
-      color: #111;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #F7F6F3;
+      color: #18181B;
       font-size: 14px;
-      line-height: 1.55;
+      line-height: 1.6;
       min-height: 100vh;
     }
 
     .page {
-      max-width: 960px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 36px 28px 60px;
+      padding: 48px 32px 80px;
     }
 
     /* ── Page title ── */
     .page-title {
-      font-size: 26px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 32px;
-      letter-spacing: -0.4px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #18181B;
+      margin-bottom: 8px;
+      letter-spacing: -0.6px;
+      line-height: 1.2;
     }
-
-    /* ── Period block ── */
-    .period { margin-bottom: 40px; }
-
-    .period-meta {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 12px;
+    .page-subtitle {
+      font-size: 14px;
+      color: #71717A;
+      margin-bottom: 36px;
+      font-weight: 400;
     }
-    .period-date  { font-size: 20px; font-weight: 700; color: #111; }
-    .period-track { font-size: 20px; font-weight: 700; color: #111; }
 
     /* ── Launch Confidence Widget ── */
     .confidence-widget {
       background: #fff;
-      border-radius: 14px;
-      border: 1.5px solid #e2e8f0;
-      padding: 24px 28px 22px;
-      margin-bottom: 36px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border-radius: 16px;
+      border: 1px solid #E4E4E7;
+      padding: 28px 32px 26px;
+      margin-bottom: 40px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04);
     }
     .confidence-header {
       display: flex;
-      align-items: baseline;
-      gap: 14px;
-      margin-bottom: 22px;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
     }
     .confidence-title {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
-      color: #111;
-      letter-spacing: 0.08em;
+      color: #A1A1AA;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+    }
+    .confidence-divider {
+      width: 1px;
+      height: 14px;
+      background: #E4E4E7;
     }
     .confidence-current-label {
       font-size: 13px;
-      color: #6b7280;
+      color: #52525B;
+      font-weight: 500;
     }
-    .confidence-current-label strong { color: #d97706; }
+    .confidence-current-label strong { color: #D97706; font-weight: 700; }
     .confidence-track {
       display: flex;
-      gap: 8px;
-      align-items: flex-start;
+      gap: 6px;
+      align-items: stretch;
     }
     .confidence-step {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 7px;
-      position: relative;
+      gap: 8px;
     }
     .confidence-bar {
       width: 100%;
-      height: 10px;
+      height: 8px;
       border-radius: 99px;
+      transition: height 0.2s;
     }
-    .bar-1 { background: #ef4444; opacity: 0.45; }
-    .bar-2 { background: #f97316; opacity: 0.45; }
-    .bar-3 { background: #f59e0b; }
-    .bar-4 { background: #84cc16; opacity: 0.45; }
-    .bar-5 { background: #22c55e; opacity: 0.45; }
+    .bar-1 { background: #FCA5A5; }
+    .bar-2 { background: #FDB87D; }
+    .bar-3 { background: #FCD34D; }
+    .bar-4 { background: #86EFAC; }
+    .bar-5 { background: #4ADE80; }
+    .confidence-step:not(.active) .confidence-bar { opacity: 0.35; }
     .confidence-step.active .confidence-bar {
-      height: 16px;
+      height: 12px;
       opacity: 1;
-      box-shadow: 0 0 0 4px rgba(245,158,11,0.25);
+      box-shadow: 0 0 0 3px rgba(252,211,77,0.3);
     }
     .confidence-num {
       font-size: 11px;
-      font-weight: 700;
-      color: #d1d5db;
+      font-weight: 600;
+      color: #D4D4D8;
     }
     .confidence-step.active .confidence-num {
-      color: #d97706;
-      font-size: 13px;
+      color: #D97706;
     }
     .confidence-label-text {
       display: flex;
@@ -117,151 +121,206 @@
     .conf-name {
       font-size: 11px;
       font-weight: 600;
-      color: #9ca3af;
+      color: #A1A1AA;
     }
     .confidence-step.active .conf-name {
+      color: #92400E;
       font-size: 12px;
-      color: #b45309;
     }
     .conf-desc {
       font-size: 10px;
-      color: #d1d5db;
+      color: #D4D4D8;
       line-height: 1.4;
     }
-    .confidence-step.active .conf-desc {
-      color: #6b7280;
-    }
+    .confidence-step.active .conf-desc { color: #71717A; }
     .conf-we-are-here {
       display: inline-block;
-      margin-top: 4px;
-      background: #fef3c7;
-      color: #b45309;
+      margin-top: 5px;
+      background: #FFFBEB;
+      color: #92400E;
       font-size: 10px;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 99px;
-      border: 1px solid #fcd34d;
-      letter-spacing: 0.03em;
-      animation: pulse-badge 2s infinite;
+      border: 1px solid #FCD34D;
+      letter-spacing: 0.04em;
+      animation: pulse-badge 2.5s ease-in-out infinite;
     }
     @keyframes pulse-badge {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
-      50%       { box-shadow: 0 0 0 5px rgba(245,158,11,0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(252,211,77,0.5); }
+      50%       { box-shadow: 0 0 0 6px rgba(252,211,77,0); }
     }
 
+    /* ── Period block ── */
+    .period { margin-bottom: 48px; }
+
+    .period-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1.5px solid #E4E4E7;
+    }
+    .period-date {
+      font-size: 18px;
+      font-weight: 800;
+      color: #18181B;
+      letter-spacing: -0.3px;
+    }
+    .period-track {
+      font-size: 11px;
+      font-weight: 700;
+      color: #A1A1AA;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── Goal banners ── */
     .cycle-goal {
-      background: #111111;
+      background: #18181B;
       color: #fff;
-      border-radius: 6px;
-      padding: 9px 16px;
-      font-size: 16px;
+      border-radius: 10px;
+      padding: 11px 18px;
+      font-size: 13px;
       font-weight: 600;
       margin-bottom: 6px;
+      letter-spacing: -0.1px;
+      line-height: 1.4;
     }
     .cycle-goal-gtm {
-      background: #6b7280;
-      color: #fff;
-      border-radius: 6px;
-      padding: 9px 16px;
-      font-size: 16px;
-      font-weight: 600;
+      background: #3F3F46;
+      color: #D4D4D8;
+      border-radius: 10px;
+      padding: 11px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 14px;
+      letter-spacing: -0.1px;
+      line-height: 1.4;
+    }
+    .cycle-goal-gtm strong { color: #fff; font-weight: 600; }
+
+    /* ── Section label row ── */
+    .period-labels {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
+      padding: 0 2px;
+    }
+    .label-initiative {
+      font-size: 11px;
+      font-weight: 700;
+      color: #A1A1AA;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    /* ── Drop zones (drag & drop targets) ── */
+    /* ── Drop zones ── */
     .drop-zone {
       min-height: 40px;
-      border-radius: 6px;
+      border-radius: 10px;
       transition: background 0.15s, border 0.15s;
     }
     .drop-zone.drag-over {
-      background: #ede9f6;
-      border: 2px dashed #7c3aed;
+      background: #F4F0FF;
+      border: 2px dashed #7C3AED;
       padding: 6px;
     }
     .drag-hint {
       font-size: 10px;
-      color: #9ca3af;
+      color: #C4B5FD;
       text-align: center;
-      padding: 2px 0 2px;
+      padding: 2px 0;
       user-select: none;
     }
 
     /* ── Card ── */
     .card {
       display: grid;
-      grid-template-columns: 1fr 320px;
+      grid-template-columns: 1fr 300px;
       background: #fff;
-      border: 1.5px solid #c4b5fd;
-      border-radius: 6px;
+      border: 1px solid #E4E4E7;
+      border-radius: 12px;
       overflow: hidden;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       cursor: pointer;
-      transition: opacity 0.2s, box-shadow 0.2s, transform 0.15s;
+      transition: box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
-    .card:active { cursor: grabbing; }
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transform: translateY(-1px);
+      border-color: #D4D4D8;
+    }
+    .card:active { cursor: grabbing; transform: translateY(0); }
     .card.dragging {
       opacity: 0.4;
       transform: scale(0.98);
-      box-shadow: 0 8px 24px rgba(91,33,182,0.2);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
     }
 
-    /* Left pane */
+    /* Card left pane */
     .card-left {
       display: flex;
-      min-height: 90px;
+      min-height: 100px;
     }
 
-    /* Colored stripe with rotated label */
+    /* Colored stripe */
     .stripe {
-      width: 34px;
+      width: 32px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .stripe-product { background: #111111; }
-    .stripe-gtm     { background: #6b7280; }
+    .stripe-product { background: #18181B; }
+    .stripe-gtm     { background: #52525B; }
 
     .stripe-label {
-      color: #fff;
-      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      font-size: 9px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
       writing-mode: vertical-rl;
       transform: rotate(180deg);
       white-space: nowrap;
     }
 
-    /* Card body text */
+    /* Card body */
     .card-body {
-      padding: 11px 14px;
+      padding: 14px 16px;
       flex: 1;
     }
     .card-title {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
-      color: #111;
-      margin-bottom: 6px;
+      color: #18181B;
+      margin-bottom: 8px;
       line-height: 1.45;
+      letter-spacing: -0.1px;
     }
     .card-field {
-      font-size: 12.5px;
-      color: #333;
-      margin-bottom: 3px;
+      font-size: 12px;
+      color: #52525B;
+      margin-bottom: 4px;
       line-height: 1.55;
     }
-    .card-field strong { font-weight: 700; }
+    .card-field strong {
+      font-weight: 600;
+      color: #3F3F46;
+    }
 
-    /* Right pane */
+    /* Card right pane */
     .card-right {
-      border-left: 1.5px solid #ede9f6;
-      padding: 11px 14px;
+      border-left: 1px solid #F4F4F5;
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      background: #faf9ff;
+      gap: 8px;
+      background: #FAFAFA;
     }
     .right-top {
       display: flex;
@@ -270,84 +329,99 @@
       gap: 8px;
     }
     .category-name {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 700;
-      color: #374151;
+      color: #3F3F46;
       line-height: 1.3;
+      letter-spacing: -0.1px;
     }
 
     /* Badges */
     .badge {
       display: inline-flex;
       align-items: center;
-      border-radius: 4px;
-      padding: 3px 9px;
-      font-size: 10.5px;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .badge-on-track    { background: #bbf7d0; color: #14532d; }
-    .badge-not-started { background: #6b7280; color: #fff; }
-    .badge-decision    { background: #f97316; color: #fff; }
+    .badge-on-track    { background: #DCFCE7; color: #15803D; }
+    .badge-not-started { background: #F4F4F5; color: #71717A; border: 1px solid #E4E4E7; }
+    .badge-decision    { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
 
     /* Progress bar */
-    .progress-wrap { display: flex; flex-direction: column; gap: 3px; }
+    .progress-wrap { display: flex; flex-direction: column; gap: 4px; }
+    .progress-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #A1A1AA;
+      display: flex;
+      justify-content: space-between;
+    }
     .progress-bar-bg {
       width: 100%;
-      height: 5px;
-      background: #e5e7eb;
-      border-radius: 3px;
+      height: 4px;
+      background: #F4F4F5;
+      border-radius: 99px;
       overflow: hidden;
     }
     .progress-fill {
       height: 100%;
-      border-radius: 3px;
+      border-radius: 99px;
+      transition: width 0.3s ease;
     }
-    .fill-green  { background: #4ade80; }
-    .fill-orange { background: #f97316; }
+    .fill-green  { background: #4ADE80; }
+    .fill-orange { background: #FB923C; }
     .fill-empty  { width: 0 !important; }
 
     .right-note {
-      font-size: 11.5px;
-      color: #6b7280;
-      line-height: 1.45;
+      font-size: 11px;
+      color: #A1A1AA;
+      line-height: 1.5;
     }
 
     /* ── Section separators ── */
-    .section-gap { height: 28px; }
+    .section-gap { height: 32px; }
 
     /* ── UNFOLD banner ── */
     .unfold-banner {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
-      margin: 24px 0 10px;
+      margin: 32px 0 14px;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+      border-radius: 12px;
     }
     .unfold-label {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
-      color: #5b21b6;
+      color: #fff;
+      letter-spacing: -0.2px;
     }
     .unfold-right {
-      font-size: 15px;
-      font-weight: 700;
-      color: #111;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
     }
 
-    /* ── GA footer ── */
+    /* ── GA banner ── */
     .ga-banner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 24px;
-      padding: 11px 16px;
-      background: #1a1a2e;
+      margin-top: 32px;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #18181B 0%, #27272A 100%);
       color: #fff;
-      border-radius: 6px;
+      border-radius: 12px;
       font-size: 15px;
       font-weight: 700;
+      letter-spacing: -0.2px;
     }
   </style>
 </head>
@@ -360,6 +434,7 @@
   <div class="confidence-widget">
     <div class="confidence-header">
       <span class="confidence-title">Launch Confidence Scale</span>
+      <div class="confidence-divider"></div>
       <span class="confidence-current-label">Current status: <strong>Level 3 — Moderate</strong></span>
     </div>
     <div class="confidence-track">
@@ -423,7 +498,7 @@
     <div class="cycle-goal">Product Goal - Pilot with a Property on Demo + Moderated User Testing</div>
     <div class="cycle-goal-gtm">GTM Goal - Finalize pricing, identify pilot candidates &amp; lay product marketing foundations</div>
     <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; margin-bottom:6px;">
-      <span class="period-track">Initiative</span>
+      <span class="label-initiative">Initiative</span>
       <span class="period-track">Progress Tracking</span>
     </div>
 
@@ -641,7 +716,7 @@
     <div class="cycle-goal">Product Goal - Closed Beta testing in Production (1/2 properties)</div>
     <div class="cycle-goal-gtm">GTM Goal - Onboard pilot customers, enable Sales &amp; CS, build KPI tracking &amp; prepare Unfold launch content</div>
     <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; margin-bottom:6px;">
-      <span class="period-track">Initiative</span>
+      <span class="label-initiative">Initiative</span>
       <span class="period-track">Progress Tracking</span>
     </div>
 
@@ -904,7 +979,7 @@
   <div class="cycle-goal">Product Goal - Launch at Unfold (Production, 20 properties)</div>
   <div class="cycle-goal-gtm">GTM Goal - Finalize sales enablement &amp; drive pre-Unfold awareness campaign</div>
   <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; margin-bottom:6px;">
-    <span class="period-track">Initiative</span>
+    <span class="label-initiative">Initiative</span>
     <span class="period-track">Progress Tracking</span>
   </div>
   <p class="drag-hint">↕ Drag cards between blocks</p>
@@ -1021,3 +1096,4 @@
 </script>
 </body>
 </html>
+
