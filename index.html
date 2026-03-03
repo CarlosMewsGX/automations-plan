@@ -6,13 +6,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Automation Plan Progress – Product and Go to Market</title>
+  <title>Automations Plan Progress – Product and Go to Market</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #F7F6F3;
+      background: #F5F5F7;
       color: #18181B;
       font-size: 14px;
       line-height: 1.6;
@@ -44,23 +44,23 @@
     /* ── Launch Confidence Widget ── */
     .confidence-widget {
       background: #fff;
-      border-radius: 16px;
+      border-radius: 20px;
       border: 1px solid #E4E4E7;
-      padding: 28px 32px 26px;
-      margin-bottom: 40px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04);
+      padding: 28px 32px 32px;
+      margin-bottom: 48px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 20px rgba(0,0,0,0.04);
     }
     .confidence-header {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
     .confidence-title {
       font-size: 11px;
-      font-weight: 700;
-      color: #A1A1AA;
-      letter-spacing: 0.1em;
+      font-weight: 600;
+      color: #8E8E93;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
     .confidence-divider {
@@ -70,10 +70,10 @@
     }
     .confidence-current-label {
       font-size: 13px;
-      color: #52525B;
+      color: #6E6E73;
       font-weight: 500;
     }
-    .confidence-current-label strong { color: #D97706; font-weight: 700; }
+    .confidence-current-label strong { color: #D97706; font-weight: 600; }
     .confidence-track {
       display: flex;
       gap: 6px;
@@ -108,9 +108,7 @@
       font-weight: 600;
       color: #D4D4D8;
     }
-    .confidence-step.active .confidence-num {
-      color: #D97706;
-    }
+    .confidence-step.active .confidence-num { color: #D97706; }
     .confidence-label-text {
       display: flex;
       flex-direction: column;
@@ -152,52 +150,53 @@
     }
 
     /* ── Period block ── */
-    .period { margin-bottom: 48px; }
+    .period { margin-bottom: 56px; }
 
     .period-meta {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
-      padding-bottom: 14px;
-      border-bottom: 1.5px solid #E4E4E7;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #E8E8ED;
     }
     .period-date {
-      font-size: 18px;
-      font-weight: 800;
-      color: #18181B;
-      letter-spacing: -0.3px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #1D1D1F;
+      letter-spacing: -0.4px;
     }
     .period-track {
       font-size: 11px;
-      font-weight: 700;
-      color: #A1A1AA;
-      letter-spacing: 0.08em;
+      font-weight: 500;
+      color: #AEAEB2;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
     /* ── Goal banners ── */
     .cycle-goal {
-      background: #18181B;
-      color: #fff;
-      border-radius: 10px;
-      padding: 11px 18px;
+      background: #1D1D1F;
+      color: #F5F5F7;
+      border-radius: 12px;
+      padding: 13px 20px;
       font-size: 13px;
       font-weight: 600;
       margin-bottom: 6px;
       letter-spacing: -0.1px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
     .cycle-goal-gtm {
-      background: #3F3F46;
-      color: #D4D4D8;
-      border-radius: 10px;
-      padding: 11px 18px;
+      background: #3A3A3C;
+      color: #EBEBF5;
+      border-radius: 12px;
+      padding: 13px 20px;
       font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 14px;
+      font-weight: 400;
+      margin-bottom: 16px;
       letter-spacing: -0.1px;
-      line-height: 1.4;
+      line-height: 1.45;
+      opacity: 0.85;
     }
     .cycle-goal-gtm strong { color: #fff; font-weight: 600; }
 
@@ -211,30 +210,24 @@
     }
     .label-initiative {
       font-size: 11px;
-      font-weight: 700;
-      color: #A1A1AA;
-      letter-spacing: 0.08em;
+      font-weight: 500;
+      color: #AEAEB2;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
     /* ── Drop zones ── */
     .drop-zone {
       min-height: 40px;
-      border-radius: 10px;
-      transition: background 0.15s, border 0.15s;
+      border-radius: 12px;
+      border: 1.5px solid transparent;
+      transition: background 0.18s, border-color 0.18s;
     }
     .drop-zone.drag-over {
-      background: #F4F0FF;
-      border: 2px dashed #7C3AED;
-      padding: 6px;
+      background: #F5F0FF;
+      border-color: #A78BFA;
     }
-    .drag-hint {
-      font-size: 10px;
-      color: #C4B5FD;
-      text-align: center;
-      padding: 2px 0;
-      user-select: none;
-    }
+    .drag-hint { display: none; }
 
     /* ── Card ── */
     .card {
@@ -242,23 +235,23 @@
       grid-template-columns: 1fr 300px;
       background: #fff;
       border: 1px solid #E4E4E7;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       margin-bottom: 10px;
       cursor: pointer;
-      transition: box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: box-shadow 0.22s ease, transform 0.18s ease, border-color 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
     .card:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+      transform: translateY(-2px);
       border-color: #D4D4D8;
     }
     .card:active { cursor: grabbing; transform: translateY(0); }
     .card.dragging {
       opacity: 0.4;
       transform: scale(0.98);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.14);
     }
 
     /* Card left pane */
@@ -267,45 +260,34 @@
       min-height: 100px;
     }
 
-    /* Colored stripe */
+    /* Thin accent stripe — replaces heavy solid block */
     .stripe {
-      width: 32px;
+      width: 4px;
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    .stripe-product { background: #18181B; }
-    .stripe-gtm     { background: #52525B; }
+    .stripe-product { background: #1D1D1F; }
+    .stripe-gtm     { background: #86868B; }
 
-    .stripe-label {
-      color: rgba(255,255,255,0.7);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      white-space: nowrap;
-    }
+    /* Hide stripe label (no space in 4px stripe) */
+    .stripe-label { display: none; }
 
     /* Card body */
     .card-body {
-      padding: 14px 16px;
+      padding: 18px 20px;
       flex: 1;
     }
     .card-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #18181B;
+      font-size: 14px;
+      font-weight: 650;
+      color: #1D1D1F;
       margin-bottom: 8px;
       line-height: 1.45;
-      letter-spacing: -0.1px;
+      letter-spacing: -0.2px;
     }
     .card-field {
       font-size: 12px;
-      color: #52525B;
-      margin-bottom: 4px;
+      color: #6E6E73;
+      margin-bottom: 5px;
       line-height: 1.55;
     }
     .card-field strong {
@@ -315,11 +297,11 @@
 
     /* Card right pane */
     .card-right {
-      border-left: 1px solid #F4F4F5;
-      padding: 14px 16px;
+      border-left: 1px solid #F2F2F7;
+      padding: 18px 18px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       background: #FAFAFA;
     }
     .right-top {
@@ -330,7 +312,7 @@
     }
     .category-name {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       color: #3F3F46;
       line-height: 1.3;
       letter-spacing: -0.1px;
@@ -340,48 +322,59 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      border-radius: 6px;
-      padding: 3px 8px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
+      gap: 5px;
+      border-radius: 99px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: -0.1px;
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .badge-on-track    { background: #DCFCE7; color: #15803D; }
-    .badge-not-started { background: #F4F4F5; color: #71717A; border: 1px solid #E4E4E7; }
-    .badge-decision    { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+    .badge::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .badge-on-track    { background: #F0FDF4; color: #16A34A; }
+    .badge-on-track::before { background: #22C55E; }
+    .badge-not-started { background: #F5F5F5; color: #8E8E93; }
+    .badge-not-started::before { background: #C7C7CC; }
+    .badge-decision    { background: #FFF7ED; color: #C2410C; }
+    .badge-decision::before { background: #FB923C; }
 
     /* Progress bar */
-    .progress-wrap { display: flex; flex-direction: column; gap: 4px; }
+    .progress-wrap { display: flex; flex-direction: column; gap: 5px; }
     .progress-label {
-      font-size: 10px;
-      font-weight: 600;
-      color: #A1A1AA;
+      font-size: 11px;
+      font-weight: 500;
+      color: #8E8E93;
       display: flex;
       justify-content: space-between;
     }
     .progress-bar-bg {
       width: 100%;
-      height: 4px;
-      background: #F4F4F5;
+      height: 6px;
+      background: #E8E8ED;
       border-radius: 99px;
       overflow: hidden;
     }
     .progress-fill {
       height: 100%;
       border-radius: 99px;
-      transition: width 0.3s ease;
+      transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
     }
-    .fill-green  { background: #4ADE80; }
-    .fill-orange { background: #FB923C; }
+    .fill-green  { background: linear-gradient(90deg, #34C759, #30D158); }
+    .fill-orange { background: linear-gradient(90deg, #FF9F0A, #FF6B00); }
     .fill-empty  { width: 0 !important; }
 
     .right-note {
       font-size: 11px;
-      color: #A1A1AA;
-      line-height: 1.5;
+      color: #8E8E93;
+      line-height: 1.6;
     }
 
     /* ── Section separators ── */
@@ -423,12 +416,68 @@
       font-weight: 700;
       letter-spacing: -0.2px;
     }
+
+    /* ── Segmented control ── */
+    .seg-header {
+      margin-bottom: 48px;
+    }
+    .seg-control {
+      display: flex;
+      width: 100%;
+      background: #E8E8ED;
+      border-radius: 18px;
+      padding: 4px;
+      gap: 3px;
+      position: relative;
+    }
+    .seg-btn {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      padding: 18px 32px;
+      font-size: 22px;
+      font-weight: 500;
+      color: #86868B;
+      background: none;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: -0.5px;
+      transition: color 0.2s;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .seg-btn:hover { color: #1D1D1F; }
+    .seg-btn.active {
+      color: #1D1D1F;
+      font-weight: 700;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 0 0 0.5px rgba(0,0,0,0.06);
+    }
+
+    /* ── View transitions ── */
+    .tab-view { display: none; opacity: 0; }
+    .tab-view.active { display: block; animation: fadeIn 0.22s ease forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
 <div class="page">
 
-  <h1 class="page-title">Automation Plan Progress – Product and Go to Market</h1>
+  <!-- Segmented control header -->
+  <div class="seg-header">
+    <div class="seg-control">
+      <button class="seg-btn active" onclick="switchTab('main', this)">Automations Plan Progress</button>
+      <button class="seg-btn" onclick="switchTab('emergency', this)">Automations Emergency Plan</button>
+    </div>
+  </div>
+
+  <!-- ══ MAIN VIEW ══ -->
+  <div id="view-main" class="tab-view active">
 
   <!-- ── Launch Confidence Scale ── -->
   <div class="confidence-widget">
@@ -439,7 +488,7 @@
     </div>
     <div class="confidence-track">
 
-      <div class="confidence-step">
+      <div class="confidence-step" data-level="1">
         <div class="confidence-bar bar-1"></div>
         <div class="confidence-num">1</div>
         <div class="confidence-label-text">
@@ -448,7 +497,7 @@
         </div>
       </div>
 
-      <div class="confidence-step">
+      <div class="confidence-step" data-level="2">
         <div class="confidence-bar bar-2"></div>
         <div class="confidence-num">2</div>
         <div class="confidence-label-text">
@@ -457,7 +506,7 @@
         </div>
       </div>
 
-      <div class="confidence-step active">
+      <div class="confidence-step active" data-level="3">
         <div class="confidence-bar bar-3"></div>
         <div class="confidence-num">3</div>
         <div class="confidence-label-text">
@@ -467,7 +516,7 @@
         </div>
       </div>
 
-      <div class="confidence-step">
+      <div class="confidence-step" data-level="4">
         <div class="confidence-bar bar-4"></div>
         <div class="confidence-num">4</div>
         <div class="confidence-label-text">
@@ -476,17 +525,17 @@
         </div>
       </div>
 
-      <div class="confidence-step">
+      <div class="confidence-step" data-level="5">
         <div class="confidence-bar bar-5"></div>
         <div class="confidence-num">5</div>
         <div class="confidence-label-text">
-          <span class="conf-name">Full Confidence 🚀</span>
+          <span class="conf-name">Full Confidence</span>
           <span class="conf-desc">Ready to launch</span>
         </div>
       </div>
 
     </div>
-  </div>
+  </div><!-- /confidence-widget -->
 
   <!-- ═══════════════════════════════════════════════
        Mar 3 – Mar 27
@@ -521,9 +570,9 @@
             <span class="badge badge-on-track">ON TRACK</span>
           </div>
           <div class="progress-wrap">
-            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:50%"></div></div>
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:60%"></div></div>
           </div>
-          <p class="right-note">50% complete · Expected completion on schedule</p>
+          <p class="right-note">60% complete · On schedule</p>
         </div>
       </div>
 
@@ -545,7 +594,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:40%"></div></div>
           </div>
-          <p class="right-note">40% complete · Reason: Critical alerting work is expected to start next week and be delivered before end-of-March</p>
+          <p class="right-note">40% complete · Design changes required re-adapting how we query AppMixer API, which slowed progress.</p>
         </div>
       </div>
 
@@ -565,9 +614,9 @@
             <span class="badge badge-on-track">ON TRACK</span>
           </div>
           <div class="progress-wrap">
-            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:40%"></div></div>
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:5%"></div></div>
           </div>
-          <p class="right-note">40% complete · Reason: Critical alerting work is expected to start next week and be delivered before end-of-March</p>
+          <p class="right-note">5% complete · Initial discovery done, but no development started yet due to capacity.</p>
         </div>
       </div>
 
@@ -587,9 +636,9 @@
             <span class="badge badge-on-track">ON TRACK</span>
           </div>
           <div class="progress-wrap">
-            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:20%"></div></div>
+            <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:70%"></div></div>
           </div>
-          <p class="right-note">20% complete · Reason: We just started working on it and it's the most complex automation due to it's logic</p>
+          <p class="right-note">70% complete · Missing notification component; doing quality refactors of the first components built.</p>
         </div>
       </div>
 
@@ -610,7 +659,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:20%"></div></div>
           </div>
-          <p class="right-note">20% complete · Reason: We just started working on it and it's the most complex automation due to it's logic</p>
+          <p class="right-note">20% complete</p>
         </div>
       </div>
 
@@ -632,7 +681,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
           </div>
-          <p class="right-note">Not started</p>
+          <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
         </div>
       </div>
 
@@ -654,7 +703,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-orange" style="width:50%"></div></div>
           </div>
-          <p class="right-note">50% complete · 5 models evaluated — need GX leadership sign-off plus Commercial/Finance later. Pending on Nova news this week.</p>
+          <p class="right-note">50% complete · 5 models evaluated — need Product Marketing decision based on our proposal and point of view.</p>
         </div>
       </div>
 
@@ -742,7 +791,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
           </div>
-          <p class="right-note">Not started</p>
+          <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
         </div>
       </div>
 
@@ -764,7 +813,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
           </div>
-          <p class="right-note">Not started</p>
+          <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
         </div>
       </div>
 
@@ -808,7 +857,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
           </div>
-          <p class="right-note">Not started</p>
+          <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
         </div>
       </div>
 
@@ -830,7 +879,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
           </div>
-          <p class="right-note">Not started</p>
+          <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
         </div>
       </div>
 
@@ -852,7 +901,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
           </div>
-          <p class="right-note">Not started</p>
+          <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
         </div>
       </div>
 
@@ -874,7 +923,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
           </div>
-          <p class="right-note">Not started</p>
+          <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
         </div>
       </div>
 
@@ -984,7 +1033,7 @@
           <div class="progress-wrap">
             <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
           </div>
-          <p class="right-note">Not started</p>
+          <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
         </div>
       </div>
 
@@ -1060,6 +1109,191 @@
   <div class="cycle-goal">Product Goal - Available to 100s hotels (GA)</div>
   <div class="cycle-goal-gtm">GTM Goal - Drive GA market launch, scale sales pipeline &amp; activate full customer acquisition programme</div>
 
+
+  </div><!-- /view-main -->
+
+  <!-- ══ EMERGENCY PLAN VIEW ══ -->
+  <div id="view-emergency" class="tab-view">
+    <div class="period">
+      <div class="cycle-goal">Product Goal - Pilot with a Property on Demo + Moderated User Testing</div>
+      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; margin-bottom:6px;">
+        <span class="label-initiative">Initiative</span>
+        <span class="period-track">Progress Tracking</span>
+      </div>
+
+      <div class="drop-zone">
+
+        <div class="card" draggable="false" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-1020">
+          <div class="card-left">
+            <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+            <div class="card-body">
+              <div class="card-title">Allow hotels to activate pre-built automations instead of building from scratch.</div>
+              <p class="card-field"><strong>Goal:</strong> Launch from prebuilt starters.</p>
+              <p class="card-field"><strong>Success criteria:</strong> Pilot-ready templates: Room Upgrades template exists, is editable, and can be published to a working flow on the demo property with minimal changes.</p>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="right-top">
+              <span class="category-name">Templates</span>
+              <span class="badge badge-on-track">ON TRACK</span>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:60%"></div></div>
+            </div>
+            <p class="right-note">60% complete · On schedule</p>
+          </div>
+        </div>
+
+        <div class="card" draggable="false" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-1021">
+          <div class="card-left">
+            <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+            <div class="card-body">
+              <div class="card-title">Allow hotels to see if automations ran and why they failed.</div>
+              <p class="card-field"><strong>Goal:</strong> Provide enough visibility to debug runs and support operations.</p>
+              <p class="card-field"><strong>Success criteria:</strong> Pilot-ready logging: run list with filters (time/status/automation), run detail timeline with step outcomes + final status, and "next step" guidance from error codes for common failures.</p>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="right-top">
+              <span class="category-name">Minimum Logs +<br>Critical alerting</span>
+              <span class="badge badge-on-track">ON TRACK</span>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:40%"></div></div>
+            </div>
+            <p class="right-note">40% complete · Design changes required re-adapting how we query AppMixer API, which slowed progress.</p>
+          </div>
+        </div>
+
+        <div class="card" draggable="false" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-1143">
+          <div class="card-left">
+            <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+            <div class="card-body">
+              <div class="card-title">Allow hotels to automatically stop a failing automation and get a PMS alert to fix it.</div>
+              <p class="card-field"><strong>Goal:</strong> Prevent silent failure cascades and protect hotel operations.</p>
+              <p class="card-field"><strong>Success criteria:</strong> Pilot-ready slice: system thresholds detect degraded runs, PMS shows a high-signal alert, breached thresholds auto-pause the flow, and the alert links to runs/logs with a clear remediation path.</p>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="right-top">
+              <span class="category-name">Minimum Logs +<br>Critical alerting</span>
+              <span class="badge badge-on-track">ON TRACK</span>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:5%"></div></div>
+            </div>
+            <p class="right-note">5% complete · Initial discovery done, but no development started yet due to capacity.</p>
+          </div>
+        </div>
+
+        <div class="card" draggable="false" data-href="https://mews.atlassian.net/jira/polaris/projects/GEX/ideas?selectedIssue=GEX-940">
+          <div class="card-left">
+            <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+            <div class="card-body">
+              <div class="card-title">Allow hotels to automatically upgrade loyal guests to a better room, with full control over inventory and limits.</div>
+              <p class="card-field"><strong>Goal:</strong> Automate consistent upgrades with guardrails.</p>
+              <p class="card-field"><strong>Success:</strong> Pilot-ready end-to-end flow: publishable + runnable on demo property data, upgrades applied for eligible reservations, guardrails prevent inventory/conflict issues, and each run is traceable in logs.</p>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="right-top">
+              <span class="category-name">Room Upgrades</span>
+              <span class="badge badge-on-track">ON TRACK</span>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:70%"></div></div>
+            </div>
+            <p class="right-note">70% complete · Missing notification component; doing quality refactors of the first components built.</p>
+          </div>
+        </div>
+
+        <div class="card" draggable="false" data-href="#">
+          <div class="card-left">
+            <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+            <div class="card-body">
+              <div class="card-title">Automation Hub Services production-ready</div>
+              <p class="card-field"><strong>Goal:</strong> Harden the Automation Hub Service (AHS) and Gateway for production-readiness — security, scaling, environment separation, CI/CD, observability, and resilience.</p>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="right-top">
+              <span class="category-name">Services production-ready</span>
+              <span class="badge badge-on-track">ON TRACK</span>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg"><div class="progress-fill fill-green" style="width:20%"></div></div>
+            </div>
+            <p class="right-note">20% complete</p>
+          </div>
+        </div>
+
+        <div class="card" draggable="false" data-href="#">
+          <div class="card-left">
+            <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+            <div class="card-body">
+              <div class="card-title">Existing services "Send message to guest"</div>
+              <p class="card-field"><strong>Goal:</strong> Enable SMS as an action step inside any automation flow.</p>
+              <p class="card-field"><strong>Success criteria:</strong> "Send message to guest" action available in the Workflow Creator, working with PMS existing services.</p>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="right-top">
+              <span class="category-name">PMS</span>
+              <span class="badge badge-not-started">NOT STARTED</span>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+            </div>
+            <p class="right-note">0% · We consulted the Comms team and we are having a refinement meeting tomorrow before starting development.</p>
+          </div>
+        </div>
+
+        <div class="card" draggable="false" data-href="#">
+          <div class="card-left">
+            <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+            <div class="card-body">
+              <div class="card-title">Resilience - Rate Limiting</div>
+              <p class="card-field"><strong>Goal:</strong> Implement rate limiting across the AH to ensure fair usage, prevent misuse, and protect platform performance and stability at scale.</p>
+              <p class="card-field"><strong>Success criteria:</strong> Rate limits enforced per customer and/or per plan tier consistently across all platform entry points.</p>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="right-top">
+              <span class="category-name">Rate limiting</span>
+              <span class="badge badge-not-started">NOT STARTED</span>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+            </div>
+            <p class="right-note">Not started</p>
+          </div>
+        </div>
+
+        <div class="card" draggable="false" data-href="#">
+          <div class="card-left">
+            <div class="stripe stripe-product"><span class="stripe-label">PRODUCT</span></div>
+            <div class="card-body">
+              <div class="card-title">Resilience - Availability</div>
+              <p class="card-field"><strong>Goal:</strong> Ensure the AH stays operational when AppMixer is down, with a clear contingency plan that minimises customer impact.</p>
+              <p class="card-field"><strong>Success criteria:</strong> Documented contingency plan, customers informed when automations are affected, and failed automations can be recovered once the library is back.</p>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="right-top">
+              <span class="category-name">Availability</span>
+              <span class="badge badge-not-started">NOT STARTED</span>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar-bg"><div class="progress-fill fill-empty" style="width:0%"></div></div>
+            </div>
+            <p class="right-note">Not started</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /view-emergency -->
+
 </div><!-- /page -->
 
 <script>
@@ -1115,6 +1349,13 @@
       if (offset < 0 && offset > closest.offset) return { offset, element: child };
       return closest;
     }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('view-' + tab).classList.add('active');
+    btn.classList.add('active');
   }
 </script>
 </body>
