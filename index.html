@@ -463,6 +463,180 @@
       from { opacity: 0; transform: translateY(6px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ── Confidence expander ── */
+    .conf-expander {
+      margin-top: -32px;
+      margin-bottom: 48px;
+      border: 1px solid #E4E4E7;
+      border-top: none;
+      border-radius: 0 0 16px 16px;
+      background: #FAFAFA;
+      overflow: hidden;
+    }
+    .conf-expander-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6E6E73;
+      gap: 8px;
+      transition: color 0.15s;
+      text-align: left;
+    }
+    .conf-expander-trigger:hover { color: #1D1D1F; }
+    .conf-expander-trigger .arrow {
+      font-size: 10px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .conf-expander-trigger.open .arrow { transform: rotate(180deg); }
+    .conf-expander-body {
+      display: none;
+      padding: 0 24px 20px;
+    }
+    .conf-expander-body.open { display: block; }
+    .conf-step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #F2F2F7;
+    }
+    .conf-step-row:last-child { border-bottom: none; }
+    .conf-step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #E8E8ED;
+      color: #8E8E93;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .conf-step-num.done {
+      background: #34C759;
+      color: #fff;
+    }
+    .conf-step-num.active-step {
+      background: #FF9F0A;
+      color: #fff;
+    }
+    .conf-step-text strong {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1D1D1F;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .conf-step-text span {
+      font-size: 11px;
+      color: #8E8E93;
+      line-height: 1.5;
+    }
+
+    /* ── Sacrifice banner ── */
+    .sacrifice-banner {
+      background: #FFF8EC;
+      border: 1px solid rgba(255,159,10,0.3);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .sacrifice-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .sacrifice-body {}
+    .sacrifice-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400E;
+      margin-bottom: 6px;
+      letter-spacing: -0.2px;
+    }
+    .sacrifice-desc {
+      font-size: 13px;
+      color: #78350F;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .sacrifice-items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sacrifice-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #92400E;
+      font-weight: 500;
+    }
+    .sacrifice-item::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FB923C;
+      flex-shrink: 0;
+    }
+
+    /* ── Ghost (deferred) cards ── */
+    .ghost-section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 28px 0 12px;
+    }
+    .ghost-section-label span {
+      font-size: 11px;
+      font-weight: 600;
+      color: #C7C7CC;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      white-space: nowrap;
+    }
+    .ghost-section-label::before,
+    .ghost-section-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #E8E8ED;
+    }
+    .card.ghost {
+      opacity: 0.42;
+      filter: grayscale(0.6);
+      cursor: default;
+      pointer-events: none;
+      position: relative;
+    }
+    .badge-deferred {
+      background: #F5F5F5;
+      color: #AEAEB2;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+      border: 1px solid #E8E8ED;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
@@ -536,6 +710,37 @@
 
     </div>
   </div><!-- /confidence-widget -->
+
+  <!-- Confidence expander -->
+  <div class="conf-expander">
+    <button class="conf-expander-trigger" onclick="toggleExpander(this)">
+      <span>→ What gets us to Level 4 — High Confidence?</span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="conf-expander-body">
+      <div class="conf-step-row">
+        <div class="conf-step-num active-step">1</div>
+        <div class="conf-step-text">
+          <strong>Pilot running on demo property</strong>
+          <span>At least one automation (Room Upgrade template) is live, published, and working end-to-end on the demo property before April. This is the single most critical signal.</span>
+        </div>
+      </div>
+      <div class="conf-step-row">
+        <div class="conf-step-num active-step">2</div>
+        <div class="conf-step-text">
+          <strong>Automation Hub Services production-ready</strong>
+          <span>Core services are stable, tested, and ready for real traffic — not just demo conditions. This is the foundation everything else runs on.</span>
+        </div>
+      </div>
+      <div class="conf-step-row">
+        <div class="conf-step-num active-step">3</div>
+        <div class="conf-step-text">
+          <strong>Notification through existing services</strong>
+          <span>The "Send message to guest" service is connected and working reliably within the hub. Hotels need to trust that automations actually communicate — this closes that loop.</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════
        Mar 3 – Mar 27
@@ -1114,6 +1319,23 @@
 
   <!-- ══ EMERGENCY PLAN VIEW ══ -->
   <div id="view-emergency" class="tab-view">
+
+    <!-- Sacrifice banner -->
+    <div class="sacrifice-banner">
+      <div class="sacrifice-icon">⚠️</div>
+      <div class="sacrifice-body">
+        <div class="sacrifice-title">Emergency mode — here's what we're choosing to defer</div>
+        <div class="sacrifice-desc">Switching to this plan keeps the core Room Upgrade flow ready for Unfold but drops three product initiatives and limits the reach of the loyalty trigger. The Amenity Gift and Allowance flows won't be built, Comms Hub integration is cut, and hotels without formal loyalty programs won't be able to trigger automations using behavioral signals. Resilience items (Rate Limiting and Availability) are moved forward to the next four weeks.</div>
+        <div class="sacrifice-items">
+          <div class="sacrifice-item">Amenity Gift flow dropped — no automated welcome gift for loyal guests at Unfold</div>
+          <div class="sacrifice-item">Allowances flow dropped — no spending allowance automation for loyalty guests</div>
+          <div class="sacrifice-item">Comms Hub integration cut — SMS/WhatsApp actions not available inside automation flows</div>
+          <div class="sacrifice-item">Soft behavioral signals not supported — hotels without formal loyalty programs cannot trigger automations (no min stay count, min nights, or min spend triggers)</div>
+          <div class="sacrifice-item">Resilience (Rate Limiting + Availability) moved to next four weeks — not in scope for Unfold</div>
+        </div>
+      </div>
+    </div>
+
     <div class="period">
       <div class="cycle-goal">Product Goal - Pilot with a Property on Demo + Moderated User Testing</div>
       <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; margin-bottom:6px;">
@@ -1291,6 +1513,107 @@
         </div>
 
       </div>
+
+      <!-- Ghost / deferred cards -->
+      <div class="ghost-section-label"><span>Not included in this plan</span></div>
+
+      <!-- Ghost: Amenity Gift -->
+      <div class="card ghost">
+        <div class="card-left">
+          <div class="stripe stripe-product"></div>
+          <div class="card-body">
+            <div class="card-title">Allow hotels to automatically recognize loyal guests with a personalized welcome gift on arrival, with full control over budget and selection.</div>
+            <p class="card-field"><strong>Goal:</strong> Automatically create a staff task to deliver a personalized welcome gift to loyal guests.</p>
+            <p class="card-field"><strong>Success:</strong> Pilot-ready end-to-end flow: publishable + runnable on property data.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Amenity Gift</span>
+            <span class="badge-deferred">Not included</span>
+          </div>
+          <p class="right-note">Full flow dropped from emergency scope — not ready for Unfold under this plan.</p>
+        </div>
+      </div>
+
+      <!-- Ghost: Allowances -->
+      <div class="card ghost">
+        <div class="card-left">
+          <div class="stripe stripe-product"></div>
+          <div class="card-body">
+            <div class="card-title">Allow hotels to automatically reward loyal guests with a spending allowance on arrival, with full control over budget, outlets, and expiry.</div>
+            <p class="card-field"><strong>Goal:</strong> Automatically issue a per-stay or per-day spending allowance to eligible loyalty guests.</p>
+            <p class="card-field"><strong>Success:</strong> Pilot-ready end-to-end flow: publishable + runnable on property data.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Allowance Flow</span>
+            <span class="badge-deferred">Not included</span>
+          </div>
+          <p class="right-note">Full flow dropped from emergency scope — not ready for Unfold under this plan.</p>
+        </div>
+      </div>
+
+      <!-- Ghost: Comms Hub integration -->
+      <div class="card ghost">
+        <div class="card-left">
+          <div class="stripe stripe-product"></div>
+          <div class="card-body">
+            <div class="card-title">Comms Hub integration — "Send message to guest"</div>
+            <p class="card-field"><strong>Goal:</strong> Enable SMS/WhatsApp as an action step inside any automation flow.</p>
+            <p class="card-field"><strong>Success criteria:</strong> "Send message to guest" action available in the Workflow Creator, working with Comms Hub templates.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Comms Hub</span>
+            <span class="badge-deferred">Not included</span>
+          </div>
+          <p class="right-note">Comms Hub not available for integration — cut from emergency plan.</p>
+        </div>
+      </div>
+
+      <!-- Ghost: Soft signals -->
+      <div class="card ghost">
+        <div class="card-left">
+          <div class="stripe stripe-product"></div>
+          <div class="card-body">
+            <div class="card-title">Soft signals only — Behavioral signals for hotels without formal loyalty programs</div>
+            <p class="card-field"><strong>What's dropped:</strong> The ability to trigger automations based on behavioral data instead of structured loyalty membership.</p>
+            <p class="card-field"><strong>Min stay count</strong> (e.g. ≥ 3 stays) · <strong>Min nights stayed</strong> (e.g. ≥ 10 nights) · <strong>Min total spent</strong> (e.g. ≥ €500)</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Room Upgrades</span>
+            <span class="badge-deferred">Not included</span>
+          </div>
+          <p class="right-note">Hotels without a formal loyalty program cannot use this trigger — limiting the automation to a subset of our customer base.</p>
+        </div>
+      </div>
+
+      <!-- Ghost: Resilience (moved forward) -->
+      <div class="ghost-section-label"><span>Moved to next four weeks (Apr 14 – May 22)</span></div>
+
+      <div class="card ghost">
+        <div class="card-left">
+          <div class="stripe stripe-product"></div>
+          <div class="card-body">
+            <div class="card-title">Resilience — Rate Limiting &amp; Availability</div>
+            <p class="card-field"><strong>Rate Limiting:</strong> Enforce fair usage per customer and plan tier across all platform entry points.</p>
+            <p class="card-field"><strong>Availability:</strong> Keep the Automation Hub operational when AppMixer is down, with a documented contingency plan and recovery path.</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="right-top">
+            <span class="category-name">Resilience</span>
+            <span class="badge-deferred">Next sprint</span>
+          </div>
+          <p class="right-note">Both items moved forward to Apr 14 – May 22. Not in scope for Unfold.</p>
+        </div>
+      </div>
+
     </div>
   </div><!-- /view-emergency -->
 
@@ -1349,6 +1672,11 @@
       if (offset < 0 && offset > closest.offset) return { offset, element: child };
       return closest;
     }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+
+  function toggleExpander(btn) {
+    btn.classList.toggle('open');
+    btn.nextElementSibling.classList.toggle('open');
   }
 
   function switchTab(tab, btn) {
